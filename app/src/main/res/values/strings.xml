@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SelfLockLauncher</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array
+        name="arr">
+        <item>ABC</item>
+        <item>DEF</item>
+    </string-array>
+</resources>

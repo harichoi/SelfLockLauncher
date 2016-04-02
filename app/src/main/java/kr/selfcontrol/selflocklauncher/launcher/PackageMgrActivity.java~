@@ -1,0 +1,89 @@
+package com.packageMgr;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.example.owner2.study.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class PackageMgrActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+     //   messageBox("1","1");
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_package_mgr);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+     //   messageBox("1","1");
+        show();
+    }
+
+    public void messageBox(String title,String msg){
+        new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(msg)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        // Some stuff to do when ok got clicked
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        // Some stuff to do when cancel got clicked
+                    }
+                })
+                .show();
+    }
+    public void show(){
+        messageBox("1","1");
+        final PackageManager pm = getPackageManager();
+//get a list of installed apps.
+        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+Log.e("aa","1");
+        ListView listView=(ListView) findViewById(R.id.appList);
+        Log.e("aa","11");
+        //ArrayList<String> list=new ArrayList<String>();
+        ArrayList<InfoClass> list=new ArrayList<InfoClass>();
+        Log.e("aa","111");
+        for (ApplicationInfo packageInfo : packages) {
+            Log.e("aa","1a");
+            InfoClass infoClass=new InfoClass(packageInfo.sourceDir,packageInfo.packageName);
+            Log.e("aa","1b");
+      //      list.add(pm.getLaunchIntentForPackage(packageInfo.packageName).toString());
+            list.add(infoClass);Log.e("aa","1c");
+            //Log.d(TAG, "Installed package :" + packageInfo.packageName);
+            //Log.d(TAG, "Source dir : " + packageInfo.sourceDir);
+            //Log.d(TAG, "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName));
+
+
+        }
+        Log.e("aa","1d");
+       CustomBaseAdapter adapter=new CustomBaseAdapter(this,list);
+        Log.e("aa","1e");
+        listView.setAdapter(adapter);Log.e("aa","1f");
+    }
+}

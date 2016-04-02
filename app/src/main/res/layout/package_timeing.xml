@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ListView
+        android:id="@+id/appList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:gravity="center"
+        android:background="#cdcdff"
+        android:layout_above="@+id/bottom_area"
+        />
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:id="@+id/bottom_area"
+        android:layout_alignParentBottom="true"
+        android:layout_height="50dp"
+        android:background="#ffffffff"
+        android:layout_width="match_parent">
+        <EditText
+            android:id="@+id/text"
+            android:paddingRight="80dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:id="@+id/block_button"
+            android:layout_alignParentRight="true"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="Add" />
+    </RelativeLayout>
+</RelativeLayout>
