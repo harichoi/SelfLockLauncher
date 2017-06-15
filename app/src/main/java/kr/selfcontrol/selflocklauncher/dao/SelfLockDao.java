@@ -62,6 +62,8 @@ public class SelfLockDao  extends SQLiteOpenHelper {
         //db.execSQL("CREATE INDEX idx1 on block_list(key)");
         setSetting("haha",55555);
         Log.d("Created", "Created");
+
+
     }
 
     @Override
@@ -69,6 +71,10 @@ public class SelfLockDao  extends SQLiteOpenHelper {
     }
 
     public List<PackageVo> readPackageList(){
+//        setTimeing(new TimeDetail("100|b|*|1-7|*"));
+//        setTimeing(new TimeDetail("90|w|*|2-6|9-18:*:*"));
+//        insertPakcageVo(new PackageVo("AAActivity", 0));
+
         Log.d("func","readPackageList");
 
         List<PackageVo> packageList=new ArrayList<>();

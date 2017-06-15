@@ -26,8 +26,8 @@ public class BlockingService extends Service {
 
     public static final int INACTIVE=0;
     public static final int ACTIVE=1;
-    public static final int BGCOLOR=0x77FFFFFF;
-    public static final long DELAYTIME = 60000*5;
+    public static final int BGCOLOR=0xFFFFFFFF;
+    public static final long DELAYTIME = 60000*1;
 
     static{
         STATE=INACTIVE;

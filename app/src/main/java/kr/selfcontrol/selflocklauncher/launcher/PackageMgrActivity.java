@@ -2,6 +2,9 @@ package kr.selfcontrol.selflocklauncher.launcher;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -10,17 +13,24 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TabHost;
+import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.nio.channels.FileChannel;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
 import kr.selfcontrol.selflocklauncher.R;
+import kr.selfcontrol.selflocklauncher.admin.DeviceAdminSample;
 import kr.selfcontrol.selflocklauncher.dao.SelfLockDao;
 import kr.selfcontrol.selflocklauncher.model.AppDetail;
 import kr.selfcontrol.selflocklauncher.vo.PackageVo;
@@ -81,6 +91,16 @@ public class PackageMgrActivity extends AppCompatActivity implements BasicFragme
     protected void onCreate(Bundle savedInstanceState) {
         SelfLockDao.createInstance(getApplicationContext());
         lockDao=SelfLockDao.getInstance();
+        exportDB();
+        DevicePolicyManager devicePolicyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+        ComponentName demoDeviceAdmin = new ComponentName(this, DeviceAdminSample.class);
+        Log.e("DeviceAdminActive==", "" + demoDeviceAdmin);
+
+        Intent intent2 = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);// adds new device administrator
+        intent2.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, demoDeviceAdmin);//ComponentName of the administrator component.
+        intent2.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                "Disable app");//dditional explanation
+        startActivityForResult(intent2, 0);
      //   messageBox("1","1");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_package_mgr);
@@ -262,4 +282,63 @@ public class PackageMgrActivity extends AppCompatActivity implements BasicFragme
         updateApps();
 	}
 
+    private void importDB() {
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+            if (sd.canWrite()) {
+                String currentDBPath = "//data//" + "<package name>"
+                        + "//databases//" + "<database name>";
+                String backupDBPath = "<backup db filename>"; // From SD directory.
+                File backupDB = new File(data, currentDBPath);
+                File currentDB = new File(sd, backupDBPath);
+
+                FileChannel src = new FileInputStream(backupDB).getChannel();
+                FileChannel dst = new FileOutputStream(currentDB).getChannel();
+                dst.transferFrom(src, 0, src.size());
+                src.close();
+                dst.close();
+                Toast.makeText(getApplicationContext(), "Import Successful!",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        } catch (Exception e) {
+
+            Toast.makeText(getApplicationContext(), "Import Failed!", Toast.LENGTH_SHORT)
+                    .show();
+
+        }
+    }
+
+    private void exportDB() {
+        Log.d("haha","hh");
+        try {
+            Log.d("haha2","hh");
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+
+            if (sd.canWrite()) {
+                Log.d("haha3","hh");
+                String currentDBPath = "//data//kr.selfcontrol.selflocklauncher"
+                        + "//databases//selfcontrol.db";
+                String backupDBPath = "selfcontrol.db";
+                File currentDB = new File(data, currentDBPath);
+                File backupDB = new File(sd, backupDBPath);
+
+                FileChannel src = new FileInputStream(currentDB).getChannel();
+                FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                dst.transferFrom(src, 0, src.size());
+                src.close();
+                dst.close();
+                Toast.makeText(getApplicationContext(), "Backup Successful!",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        } catch (Exception e) {
+
+            Toast.makeText(getApplicationContext(), "Backup Failed!", Toast.LENGTH_SHORT)
+                    .show();
+
+        }
+    }
 }
