@@ -69,6 +69,18 @@
                 android:focusable="false"
                 android:text="Edit" />
             <Button
+                android:id="@+id/backup_button"
+                android:layout_width="100dip"
+                android:layout_height="50dip"
+                android:focusable="false"
+                android:text="Backup" />
+            <Button
+                android:id="@+id/restore_button"
+                android:layout_width="100dip"
+                android:layout_height="50dip"
+                android:focusable="false"
+                android:text="Restore" />
+            <Button
                 android:id="@+id/lock_button"
                 android:layout_width="100dip"
                 android:layout_height="50dip"
